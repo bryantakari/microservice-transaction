@@ -10,4 +10,5 @@ public interface AuthService {
     BaseValueResponse<RegisterDto> registerAccount(RegisterRequest request);
 
     BaseValueResponse<LoginDto> loginAccount(LoginRequest request);
+
 }

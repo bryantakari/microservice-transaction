@@ -4,7 +4,7 @@ services:
     image: postgres:16
     restart: always
     env_file:
-      - ./user-service/.env
+      - dbuser.env
     ports:
       - "5434:5432"
     volumes:

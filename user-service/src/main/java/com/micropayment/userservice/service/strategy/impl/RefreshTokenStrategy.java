@@ -1,21 +1,13 @@
 package com.micropayment.userservice.service.strategy.impl;
 
 import com.micropayment.userservice.config.AppProperties;
-import com.micropayment.userservice.config.properties.JwtProperties;
-import com.micropayment.userservice.model.dto.JwtValidationDto;
 import com.micropayment.userservice.model.dto.UserTokenPayload;
 import com.micropayment.userservice.service.strategy.AbstractTokenStrategy;
-import com.micropayment.userservice.service.strategy.TokenStrategy;
 import com.micropayment.userservice.service.strategy.TokenType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**

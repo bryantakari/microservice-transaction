@@ -12,7 +12,6 @@ import lombok.Getter;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 /**
  * Abstract Token Strategy.

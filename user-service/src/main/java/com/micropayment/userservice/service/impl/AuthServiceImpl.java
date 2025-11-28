@@ -1,7 +1,6 @@
 package com.micropayment.userservice.service.impl;
 
 import com.micropayment.userservice.common.JwtHelper;
-import com.micropayment.userservice.common.RequestUtils;
 import com.micropayment.userservice.common.exception.ApplicationErrorCode;
 import com.micropayment.userservice.common.exception.ServiceException;
 import com.micropayment.userservice.common.response.BaseValueResponse;
@@ -16,12 +15,9 @@ import com.micropayment.userservice.service.AuthService;
 import com.micropayment.userservice.service.TokenService;
 import com.micropayment.userservice.service.UserService;
 import com.micropayment.userservice.service.strategy.TokenType;
-import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -51,7 +47,6 @@ public class AuthServiceImpl implements AuthService {
             throw new ServiceException("Invalid username or password",
                     ApplicationErrorCode.BAD_REQUEST);
         }
-        JwtDto jwtTokenDto = userMapper.mappingAccountToJwtDto(user);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setToken(tokenService.generateToken(TokenType.ACCESS,user.getId()));
