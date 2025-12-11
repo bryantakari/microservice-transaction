@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * Accounts entity class.
+ */
 @Data
 @Table(name = "accounts")
 @Entity

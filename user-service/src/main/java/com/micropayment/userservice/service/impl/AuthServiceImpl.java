@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
                     ApplicationErrorCode.UNAUTHORIZED);
         }
 
-        // ✅ Invalidate old refresh token in DB here
+        // Invalidate old refresh token in DB here
 
         String newAccess = tokenService.generateToken(TokenType.ACCESS, validationDto.getPayload().getUserId());
         String newRefresh = tokenService.generateToken(TokenType.REFRESH, validationDto.getPayload().getUserId());
