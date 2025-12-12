@@ -21,7 +21,7 @@ public abstract class AbstractTokenStrategy<T> implements TokenStrategy<T> {
     private final AppProperties appProperties;
     private JwtProperties jwtProperties;
     private SecretKey key;
-
+    protected final String TYPE_CONSTANT = "type";
     protected AbstractTokenStrategy(AppProperties appProperties) {
         this.appProperties = appProperties;
         this.jwtProperties = appProperties.getJwt();
@@ -35,13 +35,16 @@ public abstract class AbstractTokenStrategy<T> implements TokenStrategy<T> {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-
+            Object type = claims.get(TYPE_CONSTANT);
+            if( null == type || !claims.get(TYPE_CONSTANT).equals(expectedType())){
+                throw new ServiceException("Token is not valid!", ApplicationErrorCode.UNAUTHORIZED);
+            }
             return claims;
         } catch (Exception e) {
             throw new ServiceException("Token is not valid!", ApplicationErrorCode.UNAUTHORIZED);
         }
     }
-
+    protected abstract String expectedType();
     protected abstract T mapToPayload(Claims claims);
 
     @Override

@@ -18,6 +18,11 @@ public class AccessTokenStrategy extends AbstractTokenStrategy<UserTokenPayload>
     }
 
     @Override
+    protected String expectedType() {
+        return TokenType.ACCESS.name();
+    }
+
+    @Override
     protected UserTokenPayload mapToPayload(Claims claims) {
         UserTokenPayload payload = new UserTokenPayload();
         payload.setUserId(Integer.parseInt(claims.getSubject()));
@@ -31,9 +36,9 @@ public class AccessTokenStrategy extends AbstractTokenStrategy<UserTokenPayload>
 
     @Override
     public String generate(Object subject) {
-//        System.out.println(subject);
         return Jwts.builder()
                 .subject(subject.toString())
+                .claim(TYPE_CONSTANT,TokenType.ACCESS)
                 .issuedAt(new Date())
                 .expiration(
                         new Date((new Date()).getTime() + this.getJwtProperties().getAccessTokenExpiryMillis()))

@@ -1,5 +1,7 @@
 package com.micropayment.userservice.security;
 
+import com.micropayment.userservice.common.exception.JwtAuthenticationException;
+import com.micropayment.userservice.common.exception.ServiceException;
 import com.micropayment.userservice.model.dto.JwtValidationDto;
 import com.micropayment.userservice.model.dto.UserTokenPayload;
 import com.micropayment.userservice.service.TokenService;
@@ -35,19 +37,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
+        try{
+            if (header != null && header.startsWith("Bearer ")) {
+                String token = header.substring(7);
 
-            JwtValidationDto<UserTokenPayload> dto =
-                    tokenService.validateToken(token, TokenType.ACCESS);
+                JwtValidationDto<UserTokenPayload> dto =
+                        tokenService.validateToken(token, TokenType.ACCESS);
 
-            // put user info into security context
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(
-                            dto.getPayload(), null, List.of() // or roles
-                    );
+                // put user info into security context
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(
+                                dto.getPayload(), null, List.of() // or roles
+                        );
 
-            SecurityContextHolder.getContext().setAuthentication(auth);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }catch (Exception ex){
+            throw new JwtAuthenticationException(ex.getMessage());
         }
 
         filterChain.doFilter(request, response);

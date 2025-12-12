@@ -1,5 +1,7 @@
 package com.micropayment.userservice.service.impl;
 
+import com.micropayment.userservice.common.exception.ApplicationErrorCode;
+import com.micropayment.userservice.common.exception.ServiceException;
 import com.micropayment.userservice.config.AppProperties;
 import com.micropayment.userservice.config.properties.JwtProperties;
 import com.micropayment.userservice.model.dto.JwtValidationDto;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Token Service implementation.
@@ -36,25 +39,30 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public <T> String generateToken(TokenType tokenType,T payload) {
-        TokenStrategy<T> strategy = getStrategy(tokenType);
-        return strategy.generate(payload);
+    public <T> String generateToken(TokenType tokenType, T payload) {
+        try {
+            TokenStrategy<T> strategy = getStrategy(tokenType);
+            return strategy.generate(payload);
+        } catch (Exception ex) {
+            throw new ServiceException("Generate Token failed!", ApplicationErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public <T> JwtValidationDto<T> validateToken(String token,TokenType tokenType) {
+    public <T> JwtValidationDto<T> validateToken(String token, TokenType tokenType) {
         TokenStrategy<T> strategy = getStrategy(tokenType);
         return strategy.validate(token);
     }
 
     @Override
-    public RefreshToken getRefreshToken(String refreshToken) {
-        return null;
-    }
+    public RefreshToken consumeRefreshToken(String refreshToken) {
+        RefreshToken token = refreshTokenRepository
+                .findValidToken(refreshToken)
+                .orElseThrow(() -> new ServiceException("Refresh token invalid",ApplicationErrorCode.ITEM_NOT_FOUND));
+        token.setRevoked(true);
+        refreshTokenRepository.save(token);
 
-    @Override
-    public boolean invalidRefreshToken(String refreshToken) {
-        return false;
+        return token;
     }
 
     @SuppressWarnings("unchecked")

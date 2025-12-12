@@ -11,8 +11,9 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -32,28 +33,44 @@ public class RefreshTokenStrategy extends AbstractTokenStrategy<UserTokenPayload
     public boolean support(TokenType type) {
         return TokenType.REFRESH == type;
     }
-
+    @Override
+    protected String expectedType() {
+        return TokenType.REFRESH.name();
+    }
     @Override
     public String generate(Object subject) {
-        return Jwts.builder()
-                .subject(subject.toString())
-                .issuedAt(new Date())
-                .expiration(
-                        new Date((new Date()).getTime() + this.getJwtProperties().getRefreshTokenExpiryMillis()))
+        long expiryMillis = this.getJwtProperties().getRefreshTokenExpiryMillis();
+        Instant issuedAt = Instant.now();
+        Instant expirationInstant = issuedAt.plusMillis(expiryMillis);
+
+        String token = Jwts.builder()
+                .subject(String.valueOf(subject))
+                .claim(TYPE_CONSTANT,TokenType.REFRESH)
+                .issuedAt(Date.from(issuedAt))
+                .expiration(Date.from(expirationInstant))
                 .signWith(this.getKey())
                 .compact();
+
+        createRefreshToken(
+                token,
+                Integer.parseInt(subject.toString()),
+                expirationInstant
+        );
+
+        return token;
     }
 
-    private RefreshToken createRefreshToken(String token, int subject) {
-        LocalDateTime expired = LocalDateTime.now()
-                .plus(Duration.ofMillis(this.getJwtProperties().getRefreshTokenExpiryMillis()));
+    private void createRefreshToken(String token, int userId, Instant expirationInstant) {
+        LocalDateTime expirationLocalDateTime = LocalDateTime.ofInstant(
+                expirationInstant,
+                ZoneId.systemDefault()
+        );
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(token);
-        refreshToken.setUserId(subject);
+        refreshToken.setUserId(userId);
         refreshToken.setCreatedAt(LocalDateTime.now());
-        refreshToken.setExpiredAt(expired);
+        refreshToken.setExpiredAt(expirationLocalDateTime);
         refreshTokenRepository.save(refreshToken);
-        return refreshToken;
     }
 
     @Override

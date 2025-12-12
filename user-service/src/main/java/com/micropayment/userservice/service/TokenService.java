@@ -8,8 +8,7 @@ public interface TokenService {
        <T> String generateToken(TokenType tokenType,T payload);
        <T> JwtValidationDto<T> validateToken(String token,TokenType tokenType);
 
-       RefreshToken getRefreshToken(String refreshToken);
+       RefreshToken consumeRefreshToken(String refreshToken);
 
-       boolean invalidRefreshToken(String refreshToken);
 
 }
