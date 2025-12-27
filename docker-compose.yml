@@ -5,16 +5,36 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      POSTGRES_DB: user_db
     ports:
       - "5434:5432"
     volumes:
       - db_user_data:/var/lib/postgresql/data
     
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d user_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  db-order-service:
+    image: postgres:16
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: order_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - db_order_data:/var/lib/postgresql/data
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d order_db"]
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
   db_user_data:
+  db_order_data:
