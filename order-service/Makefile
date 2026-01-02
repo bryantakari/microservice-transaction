@@ -4,7 +4,7 @@ ifneq (,$(wildcard .env))
 	export
 endif
 
-MIGRATIONS_PATH = migrations
+MIGRATIONS_PATH = db/migrations
 DB_URL = postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSLMODE)
 
 .PHONY: migrate-up migrate-down migrate-force migrate-status migrate-create
