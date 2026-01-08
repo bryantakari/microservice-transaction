@@ -97,9 +97,8 @@ func (r *RepositoryImpl) Save(ctx context.Context, order Order, orderItems []Ord
 }
 
 func (r *RepositoryImpl) ListOrder(ctx context.Context, query ListOrderQuery, offset int) ([]Order, error) {
-	sortField, notFound := allowedSortFields[query.SortBy]
-
-	if notFound {
+	sortField, ok := allowedSortFields[query.SortBy]
+	if !ok {
 		sortField = "created_at"
 	}
 	strQuery := fmt.Sprintf(`

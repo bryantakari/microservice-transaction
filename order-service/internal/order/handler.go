@@ -38,16 +38,16 @@ func (h *Handler) HealthCheck(c *fiber.Ctx) error {
 func (h *Handler) CreateOrder(c *fiber.Ctx) error {
 	var req CreateOrderRequest
 	if err := c.BodyParser(&req); err != nil {
-		return fiber.ErrBadRequest
+		return c.Status(http.StatusBadRequest).JSON(&Response{Message: fiber.ErrBadRequest.Message, Data: nil})
 	}
 
 	order, err := h.srv.CreateOrder(c.Context(), req)
 	log.Debug(order, err)
 	if err != nil {
-		return err
+		return c.Status(http.StatusInternalServerError).JSON(&Response{Message: "Internal Server Error", Data: err})
 	}
 
-	return c.Status(http.StatusCreated).JSON(order)
+	return c.JSON(&Response{Message: "success", Data: order})
 
 }
 
@@ -70,10 +70,9 @@ func (h *Handler) QueryListOrder(c *fiber.Ctx) error {
 	}
 
 	orders, err := h.srv.QueryListOrder(c.Context(), query)
-	log.Debug(orders, err)
 	if err != nil {
-		return err
+		return c.Status(http.StatusInternalServerError).JSON(&Response{Message: "Internal Server Error", Data: err})
 	}
 
-	return c.JSON(orders)
+	return c.JSON(&Response{Message: "success", Data: orders})
 }
