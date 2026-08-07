@@ -72,7 +72,7 @@ router.beforeEach(async (to) => {
         response.data.data.token,
         response.data.data.refreshToken
       );
-      return to.fullPath; // Retry the original navigation after refreshing the token
+      return // Retry the original navigation after refreshing the token
     }
     return '/login'
   }
