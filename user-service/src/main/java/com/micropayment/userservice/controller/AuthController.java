@@ -7,6 +7,7 @@ import com.micropayment.userservice.model.request.LoginRequest;
 import com.micropayment.userservice.model.request.RefreshTokenRequest;
 import com.micropayment.userservice.model.request.RegisterRequest;
 import com.micropayment.userservice.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +21,19 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<BaseValueResponse<RegisterDto>> registerAccount(@RequestBody
+    public ResponseEntity<BaseValueResponse<RegisterDto>> registerAccount(@Valid @RequestBody
                                                                           RegisterRequest request) {
         return new ResponseEntity<>(authService.registerAccount(request), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<BaseValueResponse<LoginDto>> loginAccount(@RequestBody
+    public ResponseEntity<BaseValueResponse<LoginDto>> loginAccount(@Valid @RequestBody
                                                                     LoginRequest request) {
         return new ResponseEntity<>(authService.loginAccount(request), HttpStatus.OK);
     }
     @PostMapping("/refresh-token")
     public ResponseEntity<BaseValueResponse<LoginDto>> refreshToken(
-            @RequestBody RefreshTokenRequest request) {
+            @Valid @RequestBody RefreshTokenRequest request) {
         return new ResponseEntity<>(authService.refreshToken(request), HttpStatus.OK);
     }
 }

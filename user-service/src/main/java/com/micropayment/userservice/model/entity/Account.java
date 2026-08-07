@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Accounts entity class.
@@ -13,9 +14,9 @@ import java.time.LocalDateTime;
 @Entity
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id", nullable = false)
-    private int id;
+    private UUID id;
     @Column(name = "username")
     private String username;
     @Column(name = "email")

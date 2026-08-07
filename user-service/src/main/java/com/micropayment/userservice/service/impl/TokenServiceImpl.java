@@ -30,12 +30,10 @@ public class TokenServiceImpl implements TokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final AppProperties appProperties;
     private JwtProperties jwtProperties;
-    private SecretKey key;
 
     @PostConstruct
     public void init() {
         this.jwtProperties = appProperties.getJwt();
-        this.key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
@@ -44,6 +42,7 @@ public class TokenServiceImpl implements TokenService {
             TokenStrategy<T> strategy = getStrategy(tokenType);
             return strategy.generate(payload);
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new ServiceException("Generate Token failed!", ApplicationErrorCode.INTERNAL_SERVER_ERROR);
         }
     }

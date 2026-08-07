@@ -26,8 +26,6 @@ public abstract class AbstractTokenStrategy<T> implements TokenStrategy<T> {
     protected PrivateKey privateKey;
     @Autowired
     protected PublicKey publicKey;
-    private JwtProperties jwtProperties;
-    protected SecretKey key;
     protected final String TYPE_CONSTANT = "type";
 
     protected Claims validateRaw(String token) {

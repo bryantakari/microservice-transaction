@@ -2,7 +2,7 @@
 -- Table
 CREATE TABLE refresh_tokens (
   id               BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  user_id          integer  NOT NULL,
+  user_id          UUID  NOT NULL,
   token            varchar(255)  NOT NULL,
   is_revoked       BOOLEAN,
   expired_at       timestamptz  NOT NULL DEFAULT now(),

@@ -2,6 +2,7 @@ package com.micropayment.userservice.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * JWT configuration properties.

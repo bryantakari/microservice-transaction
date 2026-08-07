@@ -10,13 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
 import java.util.Date;
+import java.util.UUID;
 
 @Service("ACCESS")
 public class AccessTokenStrategy extends AbstractTokenStrategy<UserTokenPayload> {
-
-//    protected AccessTokenStrategy(AppProperties appProperties, PrivateKey privateKey) {
-//        super(appProperties,privateKey);
-//    }
 
     @Override
     protected String expectedType() {
@@ -26,7 +23,7 @@ public class AccessTokenStrategy extends AbstractTokenStrategy<UserTokenPayload>
     @Override
     protected UserTokenPayload mapToPayload(Claims claims) {
         UserTokenPayload payload = new UserTokenPayload();
-        payload.setUserId(Integer.parseInt(claims.getSubject()));
+        payload.setUserId(UUID.fromString(claims.getSubject()));
         return payload;
     }
 

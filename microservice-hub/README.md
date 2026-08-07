@@ -1,5 +1,44 @@
-# Vue 3 + TypeScript + Vite
+# Microservice Hub
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+`microservice-hub` is the frontend dashboard used to illustrate the business flow of the microservice architecture in this repository. It is a Vue 3 + TypeScript + Vite application that shows how orders, items, inventory, and users can be navigated and managed from a single dashboard interface.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Local setup requirements
+
+- Node.js 18+ (recommended) or the latest LTS version
+- npm, pnpm, or yarn package manager
+- A terminal or shell environment
+
+## Run locally
+
+1. Open a terminal in `microservice-hub`
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the local development server:
+   ```bash
+   npm run dev
+   ```
+
+The app should be available at `http://localhost:5173` by default.
+
+## Build for production
+
+```bash
+npm run build
+```
+
+Optionally preview the production build:
+
+```bash
+npm run preview
+```
+
+## Notes
+
+- This project is primarily used to illustrate the business flow and UI experience for the microservice architecture.
+- The menu is currently static, but the structure is easier to extend later if a menu management feature is added.
+
+## Related documentation
+
+See the root project README at `../README.md` for the overall repository structure and backend service details.

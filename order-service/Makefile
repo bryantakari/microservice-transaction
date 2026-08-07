@@ -22,4 +22,4 @@ migrate-status:
 	migrate -path $(MIGRATIONS_PATH) -database "$(DB_URL)" version
 
 migrate-create:
-	migrate create -ext sql -dir $(MIGRATIONS_PATH) -seq $(NAME)
+	migrate create -ext sql -dir $(MIGRATIONS_PATH) -seq $(DB_NAME)

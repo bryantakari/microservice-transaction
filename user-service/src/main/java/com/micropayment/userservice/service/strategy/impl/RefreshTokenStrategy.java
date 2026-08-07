@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * refresh strategy pattern.
@@ -55,21 +56,21 @@ public class RefreshTokenStrategy extends AbstractTokenStrategy<UserTokenPayload
 
         createRefreshToken(
                 token,
-                Integer.parseInt(subject.toString()),
+                subject.toString(),
                 expirationInstant
         );
 
         return token;
     }
 
-    private void createRefreshToken(String token, int userId, Instant expirationInstant) {
+    private void createRefreshToken(String token, String userId, Instant expirationInstant) {
         LocalDateTime expirationLocalDateTime = LocalDateTime.ofInstant(
                 expirationInstant,
                 ZoneId.systemDefault()
         );
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(token);
-        refreshToken.setUserId(userId);
+        refreshToken.setUserId(UUID.fromString(userId));
         refreshToken.setCreatedAt(LocalDateTime.now());
         refreshToken.setExpiredAt(expirationLocalDateTime);
         refreshTokenRepository.save(refreshToken);
@@ -78,7 +79,7 @@ public class RefreshTokenStrategy extends AbstractTokenStrategy<UserTokenPayload
     @Override
     protected UserTokenPayload mapToPayload(Claims claims) {
         UserTokenPayload payload = new UserTokenPayload();
-        payload.setUserId(Integer.parseInt(claims.getSubject()));
+        payload.setUserId(UUID.fromString(claims.getSubject()));
         return payload;
     }
 

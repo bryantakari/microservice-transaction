@@ -24,4 +24,9 @@ public class UserController {
     public ResponseEntity<BaseValueResponse<UserInfoDto>> getMe() {
         return new ResponseEntity<>(userService.userInfo(), HttpStatus.OK);
     }
+
+    @PostMapping("/list-menu")
+    public ResponseEntity<BaseValueResponse<UserInfoDto>> getListMenu() {
+        return new ResponseEntity<>(userService.userInfo(), HttpStatus.OK);
+    }
 }

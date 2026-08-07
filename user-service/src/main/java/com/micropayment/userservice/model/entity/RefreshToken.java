@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Refresh Token Entity class.
@@ -17,7 +18,7 @@ public class RefreshToken {
     @Column(name = "id", nullable = false)
     private long id;
     @Column(name="user_id",nullable = false)
-    private int userId;
+    private UUID userId;
     @Column(name = "token",nullable = false)
     private String token;
     @Column(name = "is_revoked",nullable = false)

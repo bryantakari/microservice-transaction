@@ -1,6 +1,6 @@
 -- Table
 CREATE TABLE accounts (
-  id               integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   username         varchar(50)  NOT NULL,
   email            varchar(50)  NOT NULL,
   phone            varchar(20),

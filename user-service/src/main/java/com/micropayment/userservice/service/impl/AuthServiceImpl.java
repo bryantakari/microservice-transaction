@@ -1,6 +1,5 @@
 package com.micropayment.userservice.service.impl;
 
-import com.micropayment.userservice.common.JwtHelper;
 import com.micropayment.userservice.common.exception.ApplicationErrorCode;
 import com.micropayment.userservice.common.exception.ServiceException;
 import com.micropayment.userservice.common.response.BaseValueResponse;
@@ -27,7 +26,6 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserService userService;
     private final UserMapper userMapper;
-    private final JwtHelper jwtHelper;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
