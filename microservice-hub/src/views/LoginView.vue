@@ -26,13 +26,16 @@ async function loginUser() {
       username: username.value,
       password: password.value,
     })
-
-    auth.setTokens(
-      response.data.data.token,
-      response.data.data.refreshToken
-    );
-
-    router.push("/");
+    if(response.status === 200){
+      auth.setTokens(
+        response.data.data.token,
+        response.data.data.refreshToken
+      );
+      router.push("/");
+    }else{
+      errorMessage.value = "Error Server Please try again later.";
+    }
+    
   } catch (error) {
     errorMessage.value = "Invalid username or password.";
     console.error(error);
@@ -43,22 +46,25 @@ async function loginUser() {
 </script>
 
 <template>
-  <v-container class="fill-height" fluid>
-    <v-row justify="center" align="center">
+  <v-container class="fill-height login-page-bg" fluid>
+    <v-row justify="center" align="center" class="fill-height">
       <v-col cols="12" sm="8" md="5" lg="4">
-        <v-card elevation="8" rounded="lg">
-          <v-card-title class="text-h5 text-center pt-6">
+        <v-card elevation="10" class="login-card">
+          <v-card-title class="text-h5 text-center login-card-title">
             Login
           </v-card-title>
 
           <v-card-text>
-            <v-form @submit.prevent="loginUser">
+            <v-form @submit.prevent="loginUser" class="login-form">
               <v-text-field
                 v-model="username"
                 label="Username"
                 prepend-inner-icon="mdi-account"
                 variant="outlined"
-                class="mb-4"
+                density="comfortable"
+                hide-details="auto"
+                rounded="lg"
+                class="login-field"
                 required
               />
 
@@ -67,12 +73,13 @@ async function loginUser() {
                 label="Password"
                 prepend-inner-icon="mdi-lock"
                 variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                rounded="lg"
                 :type="showPassword ? 'text' : 'password'"
-                :append-inner-icon="
-                  showPassword ? 'mdi-eye-off' : 'mdi-eye'
-                "
+                :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 @click:append-inner="showPassword = !showPassword"
-                class="mb-4"
+                class="login-field"
                 required
               />
 
@@ -80,7 +87,7 @@ async function loginUser() {
                 v-if="errorMessage"
                 type="error"
                 density="compact"
-                class="mb-4"
+                class="login-alert"
               >
                 {{ errorMessage }}
               </v-alert>
@@ -91,6 +98,7 @@ async function loginUser() {
                 block
                 :loading="loading"
                 :disabled="loading"
+                class="login-button"
               >
                 Login
               </v-btn>
@@ -101,3 +109,49 @@ async function loginUser() {
     </v-row>
   </v-container>
 </template>
+
+<style scoped>
+.login-page-bg {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1f2937 0%, #111827 55%, #0f172a 100%);
+}
+
+.login-card {
+  border-radius: 32px;
+  padding: 2rem 1.25rem;
+  background: rgba(31, 41, 55, 0.96);
+  color: #f8fafc;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.35);
+}
+
+.login-card-title {
+  padding-top: 0.5rem;
+  padding-bottom: 0.75rem;
+  color: #f8fafc;
+}
+
+.login-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.login-field {
+  width: 100%;
+}
+
+.login-field .v-field__input {
+  color: #f8fafc;
+}
+
+.login-field .v-text-field__slot {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.login-alert {
+  margin-top: 0.5rem;
+}
+
+.login-button {
+  margin-top: 0.5rem;
+}
+</style>

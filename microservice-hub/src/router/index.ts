@@ -6,6 +6,7 @@ import ItemsView from '@/views/ItemsView.vue'
 import InventoryView from '@/views/InventoryView.vue'
 import UsersView from '@/views/UsersView.vue'
 import { useAuthStore } from '../stores/authStores'
+import { refreshingToken } from "@/api/auth"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,10 +59,21 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const auth = useAuthStore()
 
-  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+  const tokenIsValid = auth.validateToken()
+  if (to.meta.requiresAuth && !tokenIsValid) {
+    const response = await refreshingToken({
+      refreshToken: auth.refreshToken
+    })
+    if(response.status === 200){
+      auth.setTokens(
+        response.data.data.token,
+        response.data.data.refreshToken
+      );
+      return to.fullPath; // Retry the original navigation after refreshing the token
+    }
     return '/login'
   }
 })

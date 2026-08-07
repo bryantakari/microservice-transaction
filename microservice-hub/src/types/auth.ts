@@ -3,6 +3,9 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
 export interface DataResponse<T>{
     data: T;
 }
