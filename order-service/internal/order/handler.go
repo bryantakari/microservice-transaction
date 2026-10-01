@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/bryantakari/go-common-utils/response"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 )
@@ -38,16 +39,16 @@ func (h *Handler) HealthCheck(c *fiber.Ctx) error {
 func (h *Handler) CreateOrder(c *fiber.Ctx) error {
 	var req CreateOrderRequest
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(http.StatusBadRequest).JSON(&Response{Message: fiber.ErrBadRequest.Message, Data: nil})
+		return c.Status(http.StatusBadRequest).JSON(&response.Response{Message: fiber.ErrBadRequest.Message, Data: nil})
 	}
 
 	order, err := h.srv.CreateOrder(c.Context(), req)
 	log.Debug(order, err)
 	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(&Response{Message: "Internal Server Error", Data: err})
+		return c.Status(http.StatusInternalServerError).JSON(&response.Response{Message: "Internal Server Error", Data: err})
 	}
 
-	return c.JSON(&Response{Message: "success", Data: order})
+	return c.JSON(&response.Response{Message: "success", Data: order})
 
 }
 
@@ -71,8 +72,8 @@ func (h *Handler) QueryListOrder(c *fiber.Ctx) error {
 
 	orders, err := h.srv.QueryListOrder(c.Context(), query)
 	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(&Response{Message: "Internal Server Error", Data: err})
+		return c.Status(http.StatusInternalServerError).JSON(&response.Response{Message: "Internal Server Error", Data: err})
 	}
 
-	return c.JSON(&Response{Message: "success", Data: orders})
+	return c.JSON(&response.Response{Message: "success", Data: orders})
 }

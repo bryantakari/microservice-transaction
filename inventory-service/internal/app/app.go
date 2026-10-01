@@ -1,13 +1,14 @@
-package internal
+package app
 
 import (
+	"inventory-service/internal/inventory"
 	"log/slog"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
-func AppStart(log *slog.Logger) *fiber.App {
+func AppStart(inventoryService inventory.Service, log *slog.Logger) *fiber.App {
 
 	app := fiber.New(fiber.Config{
 		AppName:               "inventory-service",
@@ -15,6 +16,8 @@ func AppStart(log *slog.Logger) *fiber.App {
 	})
 	// Global middleware
 	app.Use(recover.New())
-	log.Info("order-service ready")
+	inventoryHandler := inventory.NewHandler(inventoryService, log)
+	inventoryHandler.RegisterRoutes(app)
+	log.Info("inventory-service ready")
 	return app
 }

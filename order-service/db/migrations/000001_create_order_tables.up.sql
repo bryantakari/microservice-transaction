@@ -1,6 +1,4 @@
 
-
-
 CREATE TABLE orders (
     id      VARCHAR(26) PRIMARY KEY,
     user_id VARCHAR(64) NOT NULL,

@@ -19,8 +19,3 @@ type ListOrderQuery struct {
 	SortBy  string `json:"sort_by"`
 	OrderBy string `json:"order_by"` // asc | desc
 }
-
-type Response struct {
-	Message string `json:"message"`
-	Data    any    `json:"data"`
-}

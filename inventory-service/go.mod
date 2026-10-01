@@ -3,15 +3,15 @@ module inventory-service
 go 1.26.3
 
 require (
+	github.com/bryantakari/go-common-utils v1.0.0
 	github.com/gofiber/fiber/v2 v2.52.13
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.12.3
-	honnef.co/go/tools v0.7.0
+	github.com/oklog/ulid/v2 v2.1.1
 )
 
 require (
-	github.com/BurntSushi/toml v1.4.1-0.20240526193622-a339e1f7089c // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
@@ -23,5 +23,4 @@ require (
 	github.com/valyala/fasthttp v1.51.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/tools v0.40.1-0.20260108161641-ca281cf95054 // indirect
 )

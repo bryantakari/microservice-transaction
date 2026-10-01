@@ -1,15 +1,16 @@
-package internal
+package db
 
 import (
 	"context"
 	"fmt"
+	"inventory-service/internal/config"
 	"time"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
-func NewDbConnection(cfg *Config) (*sqlx.DB, error) {
+func NewDbConnection(cfg *config.Config) (*sqlx.DB, error) {
 	db, err := sqlx.Open("postgres", cfg.CreateDBUrl())
 	if nil != err || nil == db {
 		fmt.Println("db connection failed")

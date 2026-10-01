@@ -1,9 +1,10 @@
 module github.com/bryantakari/microservice-payment/order-service
 
-go 1.25.4
+go 1.26.3
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
+	github.com/bryantakari/go-common-utils v1.0.0 // indirect
 	github.com/gofiber/fiber/v2 v2.52.10 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/jmoiron/sqlx v1.4.0 // indirect
