@@ -15,7 +15,8 @@
    ```bash
    npm install
    ```
-3. Start the local development server:
+3. Configure the API URLs in `.env.development` (see `.env.example`). The order and inventory URLs assume those services listen on ports `3001` and `3002`; set each Go service's `APP_PORT` to match. The user service URL uses its current default port, `8080`.
+4. Start the local development server:
    ```bash
    npm run dev
    ```

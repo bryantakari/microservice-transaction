@@ -25,6 +25,8 @@ function decodeJwtPayload(token: string): JwtPayload | null {
 
 function getTokenExpiration(token: string): number | null {
   const payload = decodeJwtPayload(token);
+  console.log("Decoded payload:", payload);
+
   if (!payload || typeof payload.exp !== "number") {
     return null;
   }
@@ -35,6 +37,7 @@ function isTokenValid(token: string): boolean {
   if (!token) return false;
 
   const exp = getTokenExpiration(token);
+  console.log("Token expiration:", exp);
   if (exp === null) return false;
 
   return Date.now() < exp * 1000;
@@ -68,11 +71,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     validateToken() {
-      if (!isTokenValid(this.token)) {
-        this.logout();
-        return false;
-      }
-      return true;
+      return isTokenValid(this.token);
     }
   },
 });
