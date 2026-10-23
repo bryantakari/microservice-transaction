@@ -137,7 +137,10 @@ func (s *ServiceImpl) ReserveItems(ctx context.Context, req ReserveItemsRequest)
 	if err != nil {
 		return ReservationResponse{}, err
 	}
-	return ReservationResponse{}, nil
+	return ReservationResponse{
+		ReservationStatusResult: ReservationReserved,
+		ReservationID:           ulid.Make().String(),
+	}, nil
 }
 
 func (s *ServiceImpl) mappingItemDTOToItem(dto ItemsDTO) Items {
