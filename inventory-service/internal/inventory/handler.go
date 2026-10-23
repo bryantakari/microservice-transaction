@@ -30,6 +30,7 @@ func (h *Handler) RegisterRoutes(r fiber.Router) {
 	r.Get("/health", h.HealthCheck)
 	r.Post("/item", h.CreateItem)
 	r.Get("/item/list", h.QueryListItem)
+	r.Post("/reserve-items", h.ReserveItems)
 }
 
 func (h *Handler) HealthCheck(c *fiber.Ctx) error {
@@ -57,7 +58,7 @@ func (h *Handler) QueryListItem(c *fiber.Ctx) error {
 	limit, _ := strconv.Atoi(c.Query("limit", "10"))
 
 	sortBy := c.Query("sort_by", "created_at")
-	orderBy := strings.ToUpper(c.Query("order", "DESC"))
+	orderBy := strings.ToUpper(c.Query("order_by", c.Query("order", "DESC")))
 
 	if orderBy != "ASC" && orderBy != "DESC" {
 		orderBy = "DESC"
@@ -76,4 +77,23 @@ func (h *Handler) QueryListItem(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(&response.Response{Message: "success", Data: items})
+}
+
+func (h *Handler) ReserveItems(c *fiber.Ctx) error {
+	var req ReserveItemsRequest
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(&response.Response{Message: fiber.ErrBadRequest.Message, Data: nil})
+	}
+
+	items, err := h.srv.ReserveItems(c.Context(), req)
+	log.Debug(items, err)
+	if err != nil {
+		if err.Error() == "item not found" {
+			return c.Status(http.StatusNotFound).JSON(&response.Response{Message: "Item not found", Data: nil})
+		}
+		return c.Status(http.StatusInternalServerError).JSON(&response.Response{Message: "Internal Server Error", Data: err})
+	}
+
+	return c.JSON(&response.Response{Message: "success", Data: items})
+
 }

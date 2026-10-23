@@ -7,6 +7,7 @@ import (
 	"inventory-service/internal/config"
 	"inventory-service/internal/db"
 	"inventory-service/internal/inventory"
+	inventoryRepo "inventory-service/internal/inventory/repository"
 	"inventory-service/internal/logger"
 )
 
@@ -26,8 +27,9 @@ func main() {
 	stats := db.Stats()
 	log.Info("Connection Created ", "stats", stats)
 
-	inventoryRepository := inventory.NewRepository(db, log)
-	inventoryService := inventory.NewService(inventoryRepository, log)
+	inventoryRepository := inventoryRepo.NewInventoryRepository(db, log)
+	transactionRepository := inventoryRepo.NewTransactionRepository(db, log)
+	inventoryService := inventory.NewService(db, inventoryRepository, transactionRepository, log)
 
 	app := app.AppStart(inventoryService, log)
 
